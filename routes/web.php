@@ -15,7 +15,7 @@
 $router->post('register', ['uses' => 'UsersController@register']);
 
 
-$router->group(['middleware' => 'auth:api'], function () use ($router) {
+// $router->group(['middleware' => 'auth:api'], function () use ($router) {
     $router->get('notes', ['uses' => 'NotesController@get']);
     $router->post('notes', ['uses' => 'NotesController@create']);
     $router->post('notes/{id}', ['uses' => 'NotesController@update']);
@@ -24,7 +24,7 @@ $router->group(['middleware' => 'auth:api'], function () use ($router) {
    $router->post('users/{id}', ['uses' => 'UsersController@update']);
    $router->delete('users/{id}', ['uses' => 'UsersController@delete']);
    
-});
+// });
 
 
 

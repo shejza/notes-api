@@ -12,4 +12,5 @@ class Note extends Model
         'date',
         'total_time' 
     ];
+  
 }

@@ -5,27 +5,26 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Note;
 use App\NoteDescription;
+use Illuminate\Support\Facades\DB;
 use Auth;
+use Carbon;
 
 class NotesController extends Controller
 {
      public function get(Request $request)  {
         $user = $request->user('api');
-        $offset = isset($request->offset) ? $request->offset : 0;
-        $limit = isset($request->limit) ? $request->limit : 10;
-        $search = $request->search;
 
-        $notes = Note::when($search, function($query) use ($search) {
-            $query->where('title', 'like', '%'. $search .'%');
-        })
-            ->where('user_id', $user->id)
-            ->orderBy('updated_at', 'desc')
-            ->offset($offset)
-            ->limit($limit)
-            ->get();
 
+        $notes = DB::table('notes')->get();
+
+        foreach ($notes as $note) {
+            $note->descriptions = NoteDescription::where('notes_id', $note->id)->get();
+        }
+
+           
         return response()->json($notes, 200);
     }
+
 
     public function create(Request $request) {
   
@@ -33,7 +32,7 @@ class NotesController extends Controller
         $notes = new Note;
         $notes->user_id =  $user->id;
         $notes->title = $request->title;
-        $notes->date = $request->date;
+        $notes->date = Carbon\Carbon::parse($request->date)->format('Y-m-d') ;
         $notes->total_time = $request->total_time;
         $notes->save();
  
