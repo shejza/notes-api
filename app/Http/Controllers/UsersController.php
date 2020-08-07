@@ -35,6 +35,14 @@ class UsersController extends Controller
         return response(['data' => $data, 'message' => 'Account created successfully!', 'status' => true]);
     }
 
+     public function get(Request $request)  {
+        $user = $request->user('api');
+
+        $users = User::where('role_id', "2")->get();
+           
+        return response()->json($users, 200);
+    }
+
     public function update(Request $request)  {
         $userID = $request->route('id');
 
