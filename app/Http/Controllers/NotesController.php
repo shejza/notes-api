@@ -19,16 +19,12 @@ class NotesController extends Controller
              $query->where('user_id', $user->id);
         })->get();
 
-        
-
         foreach ($notes as $note) {
             $note->descriptions = NoteDescription::where('notes_id', $note->id)->get();
         }
-
-           
+ 
         return response()->json($notes, 200);
     }
-
 
     public function create(Request $request) {
   
@@ -49,7 +45,8 @@ class NotesController extends Controller
             $notes_desc->save();
         }
 
-    
+        $notes->descriptions = NoteDescription::where('notes_id', $notes->id)->get();
+
         return response()->json($notes, 201);
     }
 
@@ -72,8 +69,9 @@ class NotesController extends Controller
             $notes_desc->save();
         }
 
+        $notes->descriptions = NoteDescription::where('notes_id', $notes->id)->get();
          return response()->json($notes, 201);
-       
+
        }
 
      public function delete(Request $request) {
