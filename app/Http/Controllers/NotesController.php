@@ -13,9 +13,13 @@ class NotesController extends Controller
 {
      public function get(Request $request)  {
         $user = $request->user('api');
+        
+        $notes = DB::table('notes')->when($user->role_id != 1, 
+        function($query) use ($user) {
+             $query->where('user_id', $user->id);
+        })->get();
 
-
-        $notes = DB::table('notes')->get();
+        
 
         foreach ($notes as $note) {
             $note->descriptions = NoteDescription::where('notes_id', $note->id)->get();
